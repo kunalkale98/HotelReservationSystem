@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
+
 public class HotelReservationTest {
     HotelReservation hotelReservation;
     HotelInfo lakewood = new HotelInfo("Lakewood", 110,90);
@@ -28,10 +30,10 @@ public class HotelReservationTest {
     }
 
     @Test
-    public void givenDateRange_ToFindTheCheapestHotel_ShouldReturnTheHotelName() {
-        String date = "10/09/2020,11/09/2020";
-        HotelInfo cheapHotel = hotelReservation.findCheapestHotel(date);
-        Assert.assertEquals(lakewood.hotelName,cheapHotel.hotelName);
+    public void givenDateRange_ToFindTheCheapestHotel_ShouldReturnCheapestRate() throws ParseException {
+        String date = "11/09/2020,12/09/2020";
+        int hotelRate = hotelReservation.findCheapestHotel(date);
+        Assert.assertEquals(200,hotelRate);
     }
 
     @Test
