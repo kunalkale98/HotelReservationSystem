@@ -2,14 +2,20 @@ package com.hotel;
 
 public class HotelInfo {
     String hotelName;
-    int rate;
+    int weekDayRate;
+    int weekEndRate;
 
-    public HotelInfo(String hotelName,int rate){
+    public HotelInfo(String hotelName,int weekDayRate,int weekEndRate){
         this.hotelName = hotelName;
-        this.rate = rate;
+        this.weekDayRate = weekDayRate;
+        this.weekEndRate = weekEndRate;
     }
 
-    public int getRate(){
-        return rate;
+    public int getWeekDayRate(){
+        return weekDayRate;
+    }
+
+    public  int getWeekEndRate(){
+        return weekEndRate;
     }
 }

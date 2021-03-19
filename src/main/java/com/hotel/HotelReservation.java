@@ -17,7 +17,7 @@ public class HotelReservation {
 
     public void toPrint(){
         for (HotelInfo h: hotel) {
-            System.out.println(h.hotelName+" "+h.rate);
+            System.out.println(h.hotelName+" "+h.weekDayRate+","+h.weekEndRate);
         }
     }
 
@@ -29,9 +29,9 @@ public class HotelReservation {
     public HotelInfo findCheapestHotel(String date) {
         String[] arr = date.split(",");
         int noOfDays = arr.length;
-        HotelInfo cheapestHotel = hotel.stream().min(Comparator.comparing(HotelInfo::getRate))
+        HotelInfo cheapestHotel = hotel.stream().min(Comparator.comparing(HotelInfo::getWeekDayRate))
                 .orElseThrow(NoSuchElementException::new);
-        System.out.println("For "+noOfDays+" days Hotel "+cheapestHotel.hotelName+" has cheapest rates "+cheapestHotel.rate*noOfDays);
+        System.out.println("For "+noOfDays+" days Hotel "+cheapestHotel.hotelName+" has cheapest rates "+cheapestHotel.weekDayRate*noOfDays);
         return cheapestHotel;
     }
 }
