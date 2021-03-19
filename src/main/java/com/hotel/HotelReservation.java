@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HotelReservation {
-    public static ArrayList<HotelInfo> hotel = new ArrayList<>();
+    public ArrayList<HotelInfo> hotel = new ArrayList<>();
 
     public void welcome(){
         System.out.println("Welcome to Hotel Reservation System");
@@ -18,11 +18,12 @@ public class HotelReservation {
 
     public void toPrint(){
         for (HotelInfo h: hotel) {
-            System.out.println(h.hotelName+" "+h.weekDayRate+","+h.weekEndRate);
+            System.out.println(h.hotelName+", Rating: "+h.rating+", WeekdayRates: "+h.weekDayRate+", WeekendRates: "+h.weekEndRate);
         }
+        System.out.println(hotel.size());
     }
 
-    public static ArrayList<HotelInfo> getHotels() {
+    public ArrayList<HotelInfo> getHotels() {
         System.out.println(hotel);
         return hotel;
     }

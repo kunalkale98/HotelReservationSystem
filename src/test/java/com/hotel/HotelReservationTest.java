@@ -8,9 +8,9 @@ import java.text.ParseException;
 
 public class HotelReservationTest {
     HotelReservation hotelReservation;
-    HotelInfo lakewood = new HotelInfo("Lakewood", 110,90);
-    HotelInfo bridgewood = new HotelInfo("Bridgewood", 150,50);
-    HotelInfo ridgewood = new HotelInfo("Ridgewood", 220,150);
+    HotelInfo lakewood = new HotelInfo("Lakewood", 3,110,90);
+    HotelInfo bridgewood = new HotelInfo("Bridgewood", 4,150,50);
+    HotelInfo ridgewood = new HotelInfo("Ridgewood", 5,220,150);
 
     @Before
     public void setup() {
@@ -23,9 +23,9 @@ public class HotelReservationTest {
     @Test
     public void givenHotelName_ToCheckInfoAdded_ShouldReturnTrue() {
         hotelReservation.welcome();
-        Assert.assertTrue(hotelReservation.getHotels().contains(lakewood));
-        Assert.assertTrue(hotelReservation.getHotels().contains(bridgewood));
-        Assert.assertTrue(hotelReservation.getHotels().contains(ridgewood));
+        Assert.assertTrue(hotelReservation.hotel.contains(lakewood));
+        Assert.assertTrue(hotelReservation.hotel.contains(bridgewood));
+        Assert.assertTrue(hotelReservation.hotel.contains(ridgewood));
         hotelReservation.toPrint();
     }
 
@@ -34,6 +34,13 @@ public class HotelReservationTest {
         String date = "11/09/2020,12/09/2020";
         int hotelRate = hotelReservation.findCheapestHotel(date);
         Assert.assertEquals(200,hotelRate);
+    }
+
+    @Test
+    public void givenRating_ToCheckTheRatings_ShouldReturnTrue() {
+        Assert.assertEquals(3,lakewood.rating);
+        Assert.assertEquals(4,bridgewood.rating);
+        Assert.assertEquals(5,ridgewood.rating);
     }
 
     @Test
