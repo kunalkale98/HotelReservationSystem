@@ -13,16 +13,24 @@ public class HotelReservationTest {
     @Before
     public void setup() {
         hotelReservation = new HotelReservation();
-    }
-
-    @Test
-    public void givenHotelName_ToCheckInfoAdded_ShouldReturnTrue() {
         hotelReservation.welcome();
         hotelReservation.addHotel(lakewood);
         hotelReservation.addHotel(bridgewood);
         hotelReservation.addHotel(ridgewood);
+    }
+
+    @Test
+    public void givenHotelName_ToCheckInfoAdded_ShouldReturnTrue() {
         Assert.assertTrue(hotelReservation.getHotels().contains(lakewood));
         Assert.assertTrue(hotelReservation.getHotels().contains(bridgewood));
         Assert.assertTrue(hotelReservation.getHotels().contains(ridgewood));
+        hotelReservation.toPrint();
+    }
+
+    @Test
+    public void name() {
+        String date = "10/09/2020,11/09/2020";
+        HotelInfo cheapHotel = hotelReservation.findCheapestHotel(date);
+        Assert.assertEquals(lakewood.hotelName,cheapHotel.hotelName);
     }
 }

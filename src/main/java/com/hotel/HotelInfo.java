@@ -8,4 +8,8 @@ public class HotelInfo {
         this.hotelName = hotelName;
         this.rate = rate;
     }
+
+    public int getRate(){
+        return rate;
+    }
 }
