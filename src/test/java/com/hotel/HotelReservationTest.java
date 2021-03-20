@@ -5,10 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HotelReservationTest {
     HotelReservation hotelReservation;
-    HotelInfo lakewood = new HotelInfo("Lakewood", 3,110,90);
+    public HotelInfo lakewood = new HotelInfo("Lakewood", 3,110,90);
     HotelInfo bridgewood = new HotelInfo("Bridgewood", 4,150,50);
     HotelInfo ridgewood = new HotelInfo("Ridgewood", 5,220,150);
 
@@ -30,10 +32,31 @@ public class HotelReservationTest {
     }
 
     @Test
-    public void givenDateRange_ToFindTheCheapestHotel_ShouldReturnCheapestRate() throws ParseException {
+    public void givenDateRange_ToFindTheCheapestHotel_ShouldReturnTrue() throws ParseException {
         String date = "11/09/2020,12/09/2020";
-        int hotelRate = hotelReservation.findCheapestHotel(date);
-        Assert.assertEquals(200,hotelRate);
+        Map<HotelInfo,Integer> map = hotelReservation.findCheapestHotel(date);
+        Boolean hotelName = false;
+        for (Map.Entry<HotelInfo,Integer> h: map.entrySet()) {
+            if(h.getKey().hotelName.equals("Lakewood") || h.getKey().hotelName.equals("Bridgewood")){
+                hotelName = true;
+            }
+            int rate = h.getValue();
+            Assert.assertTrue(hotelName);
+            Assert.assertEquals(200,rate);
+        }
+    }
+
+    @Test
+    public void givenDateRange_ToFindTheCheapHotelWithBestRating_ShouldReturnTrue() throws ParseException {
+        String date = "11/09/2020,12/09/2020";
+        Map<HotelInfo,Integer> map = hotelReservation.findCheapestHotelByRating(date);;
+        Boolean result = false;
+        for (Map.Entry<HotelInfo,Integer> h: map.entrySet()) {
+            if(h.getKey().hotelName.equals("Bridgewood") && h.getKey().rating == 4 && h.getValue() == 200){
+                result = true;
+            }
+            Assert.assertTrue(result);
+        }
     }
 
     @Test

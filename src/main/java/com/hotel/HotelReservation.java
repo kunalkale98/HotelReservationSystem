@@ -7,6 +7,7 @@ import java.util.*;
 
 public class HotelReservation {
     public ArrayList<HotelInfo> hotel = new ArrayList<>();
+    Map<HotelInfo,Integer> hotelRates = new HashMap<>();
 
     public void welcome(){
         System.out.println("Welcome to Hotel Reservation System");
@@ -20,7 +21,6 @@ public class HotelReservation {
         for (HotelInfo h: hotel) {
             System.out.println(h.hotelName+", Rating: "+h.rating+", WeekdayRates: "+h.weekDayRate+", WeekendRates: "+h.weekEndRate);
         }
-        System.out.println(hotel.size());
     }
 
     public ArrayList<HotelInfo> getHotels() {
@@ -28,8 +28,7 @@ public class HotelReservation {
         return hotel;
     }
 
-    public int findCheapestHotel(String date) throws ParseException {
-        HotelInfo cheapestHotel;
+    public void totalRates (String date) throws ParseException {
         int noOfWeekDays = 0;
         int noOfWeekEnds = 0;
         String[] arr = date.split(",");
@@ -47,29 +46,59 @@ public class HotelReservation {
                 noOfWeekDays++;
             }
         }
-        int lakewoodRate = noOfWeekDays*hotel.get(0).weekDayRate + noOfWeekEnds*hotel.get(0).weekEndRate;
-        int bridgewoodRate = noOfWeekDays*hotel.get(1).weekDayRate + noOfWeekEnds*hotel.get(1).weekEndRate;
-        int ridgewoodRate = noOfWeekDays*hotel.get(2).weekDayRate + noOfWeekEnds*hotel.get(2).weekEndRate;
-        List<Integer> hotelRates = new ArrayList<>();
-        hotelRates.add(lakewoodRate);
-        hotelRates.add(bridgewoodRate);
-        hotelRates.add(ridgewoodRate);
-        int cheapestRates = hotelRates.stream().min(Integer::compare).get();
-        if(cheapestRates == lakewoodRate && cheapestRates == bridgewoodRate){
-            System.out.println("Both "+hotel.get(0).hotelName+" and "+hotel.get(1).hotelName+" has rate "+cheapestRates);
+        for (HotelInfo h: hotel) {
+            int cheapestRate = noOfWeekDays*h.weekDayRate + noOfWeekEnds*h.weekEndRate;
+            hotelRates.put(h,cheapestRate);
         }
-        else if(cheapestRates == lakewoodRate){
-            cheapestHotel = hotel.get(0);
-            System.out.println("For "+noOfDays+" days Hotel "+cheapestHotel.hotelName+" has cheapest rates "+cheapestRates);
+    }
+
+    public Map<HotelInfo, Integer> findCheapestHotel(String date) throws ParseException {
+        Map<HotelInfo,Integer> cheapestHotel = new HashMap<>();
+        totalRates(date);
+        Integer cheapestRates = Integer.MAX_VALUE;
+        for (HotelInfo h: hotel) {
+            Integer value = hotelRates.get(h);
+            int compare = value.compareTo(cheapestRates);
+            if(compare < 0) {
+                cheapestHotel.clear();
+                cheapestRates = value;
+                cheapestHotel.put(h,cheapestRates);
+            }
+            else if(compare == 0){
+                cheapestHotel.put(h,cheapestRates);
+            }
         }
-        else if(cheapestRates == bridgewoodRate){
-            cheapestHotel = hotel.get(1);
-            System.out.println("For "+noOfDays+" days Hotel "+cheapestHotel.hotelName+" has cheapest rates "+cheapestRates);
+        for (Map.Entry<HotelInfo,Integer> p: cheapestHotel.entrySet()) {
+            System.out.println("Hotel "+p.getKey().hotelName+" has cheapest rate "+p.getValue());
         }
-        else{
-            cheapestHotel = hotel.get(2);
-            System.out.println("For "+noOfDays+" days Hotel "+cheapestHotel.hotelName+" has cheapest rates "+cheapestRates);
+        return cheapestHotel;
+    }
+
+    public Map<HotelInfo, Integer> findCheapestHotelByRating(String date) throws ParseException {
+        totalRates(date);
+        Map<HotelInfo,Integer> cheapHotelByRating = new HashMap<>();
+        Integer cheapestRates = Integer.MAX_VALUE;
+        Integer highRating = Integer.MIN_VALUE;
+        for (HotelInfo h: hotel) {
+            Integer value = hotelRates.get(h);
+            Integer rating = h.rating;
+            int valueCompare = value.compareTo(cheapestRates);
+            int ratingCompare = rating.compareTo(highRating);
+            if (valueCompare < 0) {
+                cheapHotelByRating.clear();
+                cheapestRates = value;
+                cheapHotelByRating.put(h, cheapestRates);
+            } else if (valueCompare == 0 && ratingCompare > 0) {
+                cheapHotelByRating.clear();
+                highRating = rating;
+                cheapHotelByRating.put(h, cheapestRates);
+            } else if (valueCompare == 0 && ratingCompare == 0) {
+                cheapHotelByRating.put(h, cheapestRates);
+            }
         }
-        return cheapestRates;
+        for (Map.Entry<HotelInfo,Integer> p: cheapHotelByRating.entrySet()) {
+            System.out.println("Hotel "+p.getKey().hotelName+" has cheapest rate "+p.getValue()+" with Rating "+highRating);
+        }
+        return cheapHotelByRating;
     }
 }
