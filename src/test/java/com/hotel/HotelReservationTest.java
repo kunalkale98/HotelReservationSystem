@@ -49,10 +49,23 @@ public class HotelReservationTest {
     @Test
     public void givenDateRange_ToFindTheCheapHotelWithBestRating_ShouldReturnTrue() throws ParseException {
         String date = "11/09/2020,12/09/2020";
-        Map<HotelInfo,Integer> map = hotelReservation.findCheapestHotelByRating(date);;
+        Map<HotelInfo,Integer> map = hotelReservation.findCheapestHotelByRating(date);
         Boolean result = false;
         for (Map.Entry<HotelInfo,Integer> h: map.entrySet()) {
             if(h.getKey().hotelName.equals("Bridgewood") && h.getKey().rating == 4 && h.getValue() == 200){
+                result = true;
+            }
+            Assert.assertTrue(result);
+        }
+    }
+
+    @Test
+    public void givenDateRange_ToFindTheBestRatedHotel_ShouldReturnTrue() throws ParseException {
+        String date = "11/09/2020,12/09/2020";
+        Map<HotelInfo,Integer> map = hotelReservation.findBestRatedHotel(date);
+        Boolean result = false;
+        for (Map.Entry<HotelInfo,Integer> h: map.entrySet()) {
+            if(h.getKey().hotelName.equals("Ridgewood") && h.getKey().rating == 5){
                 result = true;
             }
             Assert.assertTrue(result);

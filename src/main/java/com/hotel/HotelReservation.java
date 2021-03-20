@@ -101,4 +101,27 @@ public class HotelReservation {
         }
         return cheapHotelByRating;
     }
+
+    public Map<HotelInfo, Integer> findBestRatedHotel(String date) throws ParseException {
+        Map<HotelInfo,Integer> bestRatedHotel = new HashMap<>();
+        totalRates(date);
+        Integer highRating = Integer.MIN_VALUE;
+        for (HotelInfo h: hotel) {
+            Integer rating = h.rating;
+            int compare = rating.compareTo(highRating);
+            if(compare > 0) {
+                bestRatedHotel.clear();
+                highRating = rating;
+                bestRatedHotel.put(h,highRating);
+            }
+            else if(compare == 0){
+                bestRatedHotel.put(h,highRating);
+            }
+        }
+        for (Map.Entry<HotelInfo,Integer> p: bestRatedHotel.entrySet()) {
+            System.out.println("Hotel "+p.getKey().hotelName+" has Best Ratings: "+p.getValue());
+        }
+        return bestRatedHotel;
+    }
 }
+
