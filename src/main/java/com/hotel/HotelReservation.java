@@ -7,7 +7,8 @@ import java.util.*;
 
 public class HotelReservation {
     public ArrayList<HotelInfo> hotel = new ArrayList<>();
-    Map<HotelInfo,Integer> hotelRates = new HashMap<>();
+    Map<HotelInfo,Integer> regularHotelRates = new HashMap<>();
+    Map<HotelInfo,Integer> rewardHotelRates = new HashMap<>();
 
     public void welcome(){
         System.out.println("Welcome to Hotel Reservation System");
@@ -29,11 +30,10 @@ public class HotelReservation {
         return hotel;
     }
 
-    public void totalRates (String date) throws ParseException {
+    public void regularTotalRates (String date) throws ParseException {
         int noOfWeekDays = 0;
         int noOfWeekEnds = 0;
         String[] arr = date.split(",");
-        int noOfDays = arr.length;
         for(int i=0; i<arr.length; i++) {
             String input_date1 = arr[i];
             SimpleDateFormat simpleDateFormat_Date1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -49,16 +49,39 @@ public class HotelReservation {
         }
         for (HotelInfo h: hotel) {
             int cheapestRate = noOfWeekDays*h.regular.get(0) + noOfWeekEnds*h.regular.get(1);
-            hotelRates.put(h,cheapestRate);
+            regularHotelRates.put(h,cheapestRate);
+        }
+    }
+
+    public void rewardTotalRates (String date) throws ParseException {
+        int noOfWeekDays = 0;
+        int noOfWeekEnds = 0;
+        String[] arr = date.split(",");
+        for(int i=0; i<arr.length; i++) {
+            String input_date1 = arr[i];
+            SimpleDateFormat simpleDateFormat_Date1 = new SimpleDateFormat("dd/MM/yyyy");
+            Date dt1 = simpleDateFormat_Date1.parse(input_date1);
+            DateFormat dateFormat_Date1 = new SimpleDateFormat("EEEE");
+            String day = dateFormat_Date1.format(dt1);
+            if(day.equals("Saturday") || day.equals("Sunday")){
+                noOfWeekEnds++;
+            }
+            else{
+                noOfWeekDays++;
+            }
+        }
+        for (HotelInfo h: hotel) {
+            int cheapestRate = noOfWeekDays*h.reward.get(0) + noOfWeekEnds*h.reward.get(1);
+            rewardHotelRates.put(h,cheapestRate);
         }
     }
 
     public Map<HotelInfo, Integer> findCheapestHotel(String date) throws ParseException {
         Map<HotelInfo,Integer> cheapestHotel = new HashMap<>();
-        totalRates(date);
+        regularTotalRates(date);
         Integer cheapestRates = Integer.MAX_VALUE;
         for (HotelInfo h: hotel) {
-            Integer value = hotelRates.get(h);
+            Integer value = regularHotelRates.get(h);
             int compare = value.compareTo(cheapestRates);
             if(compare < 0) {
                 cheapestHotel.clear();
@@ -76,12 +99,12 @@ public class HotelReservation {
     }
 
     public Map<HotelInfo, Integer> findCheapestHotelByRating(String date) throws ParseException {
-        totalRates(date);
+        regularTotalRates(date);
         Map<HotelInfo,Integer> cheapHotelByRating = new HashMap<>();
         Integer cheapestRates = Integer.MAX_VALUE;
         Integer highRating = Integer.MIN_VALUE;
         for (HotelInfo h: hotel) {
-            Integer value = hotelRates.get(h);
+            Integer value = regularHotelRates.get(h);
             Integer rating = h.rating;
             int valueCompare = value.compareTo(cheapestRates);
             int ratingCompare = rating.compareTo(highRating);
@@ -105,7 +128,7 @@ public class HotelReservation {
 
     public Map<HotelInfo, Integer> findBestRatedHotel(String date) throws ParseException {
         Map<HotelInfo,Integer> bestRatedHotel = new HashMap<>();
-        totalRates(date);
+        regularTotalRates(date);
         Integer highRating = Integer.MIN_VALUE;
         for (HotelInfo h: hotel) {
             Integer rating = h.rating;
@@ -123,6 +146,35 @@ public class HotelReservation {
             System.out.println("Hotel "+p.getKey().hotelName+" has Best Ratings: "+p.getValue());
         }
         return bestRatedHotel;
+    }
+
+    public Map<HotelInfo, Integer> cheapBestRatedForReward(String date) throws ParseException {
+        rewardTotalRates(date);
+        Map<HotelInfo,Integer> cheapHotelByRating = new HashMap<>();
+        Integer cheapestRates = Integer.MAX_VALUE;
+        Integer highRating = Integer.MIN_VALUE;
+        for (HotelInfo h: hotel) {
+            Integer value = rewardHotelRates.get(h);
+            Integer rating = h.rating;
+            int valueCompare = value.compareTo(cheapestRates);
+            int ratingCompare = rating.compareTo(highRating);
+            if (valueCompare < 0) {
+                cheapHotelByRating.clear();
+                cheapestRates = value;
+                highRating = rating;
+                cheapHotelByRating.put(h, cheapestRates);
+            } else if (valueCompare == 0 && ratingCompare > 0) {
+                cheapHotelByRating.clear();
+                highRating = rating;
+                cheapHotelByRating.put(h, cheapestRates);
+            } else if (valueCompare == 0 && ratingCompare == 0) {
+                cheapHotelByRating.put(h, cheapestRates);
+            }
+        }
+        for (Map.Entry<HotelInfo,Integer> p: cheapHotelByRating.entrySet()) {
+            System.out.println("Hotel "+p.getKey().hotelName+" has cheapest rate "+cheapestRates+" with Rating "+highRating);
+        }
+        return cheapHotelByRating;
     }
 }
 

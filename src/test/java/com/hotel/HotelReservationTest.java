@@ -88,4 +88,17 @@ public class HotelReservationTest {
         Assert.assertEquals(50,bridgewoodWeekend);
         Assert.assertEquals(150,ridgewoodWeekend);
     }
+
+    @Test
+    public void givenDateRange_ToFindTheCheapBestRatedForReward_ShouldReturnTrue() throws ParseException {
+        String date = "11/09/2020,12/09/2020";
+        Map<HotelInfo,Integer> map = hotelReservation.cheapBestRatedForReward(date);
+        Boolean result = false;
+        for (Map.Entry<HotelInfo,Integer> h: map.entrySet()) {
+            if(h.getKey().hotelName.equals("Ridgewood") && h.getKey().rating == 5 && h.getValue() == 140){
+                result = true;
+            }
+            Assert.assertTrue(result);
+        }
+    }
 }
