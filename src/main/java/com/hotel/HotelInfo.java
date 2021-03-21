@@ -1,23 +1,20 @@
 package com.hotel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HotelInfo {
     String hotelName;
     int rating;
-    int weekDayRate;
-    int weekEndRate;
+    List<Integer> regular = new ArrayList<>();
+    List<Integer> reward = new ArrayList<>();
 
-    public HotelInfo(String hotelName,int rating,int weekDayRate,int weekEndRate){
+    public HotelInfo(String hotelName,int rating,int regWeekDayRate,int regWeekEndRate, int rewWeekDayRate, int rewWeekEndRate){
         this.hotelName = hotelName;
         this.rating = rating;
-        this.weekDayRate = weekDayRate;
-        this.weekEndRate = weekEndRate;
-    }
-
-    public int getWeekDayRate(){
-        return weekDayRate;
-    }
-
-    public  int getWeekEndRate(){
-        return weekEndRate;
+        this.regular.add(regWeekDayRate);
+        this.regular.add(regWeekEndRate);
+        this.reward.add(rewWeekDayRate);
+        this.reward.add(rewWeekEndRate);
     }
 }

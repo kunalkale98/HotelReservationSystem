@@ -19,7 +19,8 @@ public class HotelReservation {
 
     public void toPrint(){
         for (HotelInfo h: hotel) {
-            System.out.println(h.hotelName+", Rating: "+h.rating+", WeekdayRates: "+h.weekDayRate+", WeekendRates: "+h.weekEndRate);
+            System.out.println(h.hotelName+", Rating: "+h.rating+", RegularWeekdayRates: "+h.regular.get(0)+", " +
+                    "RegularWeekendRates: "+h.regular.get(1)+", RewardWeekdayRates: "+h.reward.get(0)+", RewardWeekendRates: "+h.reward.get(1));
         }
     }
 
@@ -47,7 +48,7 @@ public class HotelReservation {
             }
         }
         for (HotelInfo h: hotel) {
-            int cheapestRate = noOfWeekDays*h.weekDayRate + noOfWeekEnds*h.weekEndRate;
+            int cheapestRate = noOfWeekDays*h.regular.get(0) + noOfWeekEnds*h.regular.get(1);
             hotelRates.put(h,cheapestRate);
         }
     }

@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class HotelReservationTest {
     HotelReservation hotelReservation;
-    public HotelInfo lakewood = new HotelInfo("Lakewood", 3,110,90);
-    HotelInfo bridgewood = new HotelInfo("Bridgewood", 4,150,50);
-    HotelInfo ridgewood = new HotelInfo("Ridgewood", 5,220,150);
+    public HotelInfo lakewood = new HotelInfo("Lakewood", 3,110,90,80,80);
+    HotelInfo bridgewood = new HotelInfo("Bridgewood", 4,150,50,110,50);
+    HotelInfo ridgewood = new HotelInfo("Ridgewood", 5,220,150,100,40);
 
     @Before
     public void setup() {
@@ -81,8 +81,11 @@ public class HotelReservationTest {
 
     @Test
     public void givenRates_ToCheckTheWeekendRates_ShouldReturnTrue() {
-        Assert.assertEquals(90,lakewood.weekEndRate);
-        Assert.assertEquals(50,bridgewood.weekEndRate);
-        Assert.assertEquals(150,ridgewood.weekEndRate);
+        int lakewoodWeekend = lakewood.regular.get(1);
+        int bridgewoodWeekend = bridgewood.regular.get(1);
+        int ridgewoodWeekend = ridgewood.regular.get(1);
+        Assert.assertEquals(90,lakewoodWeekend);
+        Assert.assertEquals(50,bridgewoodWeekend);
+        Assert.assertEquals(150,ridgewoodWeekend);
     }
 }
